@@ -1,3 +1,104 @@
-﻿@{
+﻿@model GmeRecomendationSystem.Models.HomeFormsModel
+<!DOCTYPE HTML>
+<html>
+<head>
+    @await Html.PartialAsync("../Shared/MetaPartial")
+    <link rel="stylesheet" href="/css/home_style.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+<body class="is-preload">
+    <div id="wrapper">
+        <div id="header">
+            <div class="logo">
+                <span class="fa fa-gamepad fa-3x"></span>
+            </div>
+            <div id="delimeter">
+                <div id="left_del"></div>
+                <div id="right_del"></div>
+            </div>
+            <div class="content">
+                <div class="inner">
+                    <h1>GRS</h1>
+                    <p>
+                    Рекомендаціна система компьютерних ігор
+                    </p>
+                </div>
+            </div>
+            <div id="delimeter">
+                <div id="left_del"></div>
+                <div id="right_del"></div>
+            </div>
+            <div id="nav">
+                <div id="a"><a href="#about">Про застосунок</a></div>
+                <div id="a"><a href="/Library/Index">Бібліотека</a></div>
+                <div id="a"><a href="/Home/GoTo/login">Авторизація</a></div>
+                <div id="a"><a href="/Home/GoTo/register">Реєстрація</a></div>
+            </div>
+        </div>
 
-}
+        <div id="main">
+            <article id="about">
+                <div class="article-content">
+                    <h1 class="major">Про застосунок</h1>
+                    <ul>
+                        <li>Цей застосунок дозволить вам отримати рекомендації щодо різних предметних областей, зокрема комп'ютерних ігор.</li>
+                        <li>Після успішної авторизації, у профілі ви можете обрати предметну область, яка вас цікавить.</li>
+                        <li>У бібліотеці ви можете обрати та оцінити елементи обраної предметної області серед запропонованих у нашій системі.</li>
+                        <li>Оцінивши хоча б п'ять елементів, на сторінці рекомендацій з'являється можливість згенерувати рекомендації.</li>
+                        <li>Майте на увазі, що рекомендації генеруються на основі ваших відгуків та відгуків інших користувачів, включно з відгкуками не з цього застосунку.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <article id="login">
+                <h1 class="major">Авторизація</h1>
+                <div class="article-content">
+                    <form method="post" action="#">
+                        <div class="fields">
+                            @Html.LabelFor(model => model.LogInModel.Email)
+                            @Html.EditorFor(model => model.LogInModel.Email, new {HtmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.LogInModel.Email, "", new {@class = "text-danger"})
+
+                            @Html.LabelFor(model => model.LogInModel.Password)
+                            @Html.EditorFor(model => model.LogInModel.Password, new {HtmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.LogInModel.Password, "", new {@class = "text-danger"})
+                        </div>
+                        <input type="submit" value="Авторизуватись" class="primary" formaction="/Home/LogIn" />
+                        @if(ViewBag.Error != null)
+                        {
+                            <div id="login-error">@ViewBag.Error</div>
+                        }
+                    </form>
+                </div>
+            </article>
+
+            <article id="register">
+                <h1 class="major">Реєстрація</h1>
+                <div class="article-content">
+                    <form method="post" action="#">
+                        <div class="fields">
+                            @Html.LabelFor(model => model.RegisterModel.NickName)
+                            @Html.EditorFor(model => model.RegisterModel.NickName, new {HtmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.RegisterModel.NickName, "", new {@class = "text-danger"})
+
+                            @Html.LabelFor(model => model.RegisterModel.Email)
+                            @Html.EditorFor(model => model.RegisterModel.Email, new {HtmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.RegisterModel.Email, "", new {@class = "text-danger"})
+
+                            @Html.LabelFor(model => model.RegisterModel.Password)
+                            @Html.EditorFor(model => model.RegisterModel.Password, new {HtmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.RegisterModel.Password, "", new {@class = "text-danger"})
+
+                            @Html.LabelFor(model => model.RegisterModel.PasswordConfirm)
+                            @Html.EditorFor(model => model.RegisterModel.PasswordConfirm, new {HtmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.RegisterModel.PasswordConfirm, "", new {@class = "text-danger"})
+                        </div>
+                        <input type="submit" value="Зареєструватися" class="primary" formaction="/Home/Register" />
+                    </form>
+                </div>
+            </article>
+        </div>
+    </div>
+    @await Html.PartialAsync("../Shared/ScriptsPartial")
+</body>
+</html>

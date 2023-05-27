@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace GmeRecomendationSystem
 {
@@ -6,7 +6,16 @@ namespace GmeRecomendationSystem
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
+			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddCookie(options =>
+				{
+					options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Home/LoginPage");
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                    options.SlidingExpiration = true;
+                    options.LogoutPath = new Microsoft.AspNetCore.Http.PathString("/Home/LogOut");
+				});
+
+            services.AddMvc();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -17,10 +26,12 @@ namespace GmeRecomendationSystem
 
             app.UseRouting();
             app.UseStaticFiles();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("Default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

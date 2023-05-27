@@ -1,0 +1,122 @@
+﻿@using GmeRecomendationSystem.Models;
+@model GmeRecomendationSystem.Models.PageModel
+<!DOCTYPE HTML>
+<html>
+<head>
+    @await Html.PartialAsync("../Shared/MetaPartial")
+    <link rel="stylesheet" href="/css/profile_style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+</head>
+<body class="is-preload">
+    <div id="wrapper">
+        <header>
+            <div id="side-cont">
+                <div id="a"><a href="/Home/GoTo/about">Про застосунок</a></div>
+            </div>
+            <div id="nav">
+                <div id="a"><a href="/Library/Index">Бібліотека</a></div>
+                <div id="a"><a href="/Recommendation/Index">Рекомендації</a></div>
+                <div id="a"><a href="/Profile/Index">Профіль</a></div>
+            </div>
+            <div id="side-cont">
+                <div id="a"><a href="/Home/LogOut">Вихід</a></div>
+            </div>
+        </header>
+        <div id="delimeter">
+            <div id="left-del"></div>
+            <div id="right-del"></div>
+        </div>
+        <div id="content">
+            <div id="inner">
+                <form id="sa-form">
+                    <select form="sa-form" name="sa">
+                        @foreach(SubjectRangeModel sa in (List<SubjectRangeModel>)ViewData["SA"])
+                        {
+                            @if(Convert.ToInt32(ViewData["SAID"]) == sa.SAID)
+                            {
+                                <option value="@sa.SAID" selected="selected">@sa.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@sa.SAID">@sa.Name</option>
+                            }
+                        }
+                    </select>
+                    <input value="Перейти" type="submit" formaction="/Profile/ChangeSA" />
+                </form>
+                <div id="inner-text">
+                    <h1>Вітаю, @ViewData["2"].</h1>
+                    <p>Тут ти можеш переглянуті усі оцінені елементи бібліотеки.</p>
+                    @if(ViewData["1"].ToString().Equals("admin"))
+                    {
+                        <div id="a"><a href="/Settings/Index">Налаштування</a></div>
+                    }
+                </div>
+                <form id="search-form">
+                    <input type="text" name="search" value="@ViewData["search"]" />
+                    <input type="submit" value="Пошук" class="primary" formaction="/Profile/Search" />
+                </form>
+            </div>
+            <div id="page-div">
+                <div id="game-list">
+                    @for (int i = 0; i < (Model.Items.Count < Model.PageSize ? Model.Items.Count : Model.PageSize); i++)
+                    {
+                        <a class="game-item" id=@String.Concat("g", Convert.ToString(i%3)) href="/ItemPage/Index/@Model.Items[i].Id">
+                            <div class="img-item">
+                                <img src=@Model.Items[i].ImageURL alt="">
+                                <div id="like-cont">
+                                    @if (@Model.Items[i].Checked)
+                                    {
+                                        <i id="like" class="fa fa-heart fa-lg"></i>
+                                    }
+                                    else
+                                    {
+                                        <i id="like" class="fa fa-heart-0 fa-lg"></i>
+                                    }
+                                </div>
+                            </div>
+                            <div id="title-item">
+                                <p>@Model.Items[i].Title</p>
+                            </div>
+                        </a>
+                    }
+                </div>
+                <div id="page-bot">
+                    <div id="delimeter">
+                        <div id="left-del"></div>
+                        <div id="right-del"></div>
+                    </div>
+                    <div id="nav">
+                        <div id="a">
+                            @if (Model.Id == 1)
+                            {
+                                <a id="disabled" href="/Profile/Index"><i class="fa fa-angle-double-left"></i></a>
+                            }
+                            else
+                            {
+                                <a href="/Profile/Index/@Convert.ToString(Model.Id-1)"><i class="fa fa-angle-double-left"></i></a>
+                            }
+                        </div>
+                        <div id="a">
+                            <p>@Model.Id</p>
+                        </div>
+                        <div id="a">
+                            @if (Model.PageSize >= Model.Items.Count)
+                            {
+                                <a id="disabled" href="/Profile/Index"><i class="fa fa-angle-double-right"></i></a>
+                            }
+                            else
+                            {
+                                <a href="/Profile/Index/@Convert.ToString(Model.Id+1)"><i class="fa fa-angle-double-right"></i></a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("../Shared/ScriptsPartial")
+</body>
+</html>
+

@@ -1,0 +1,90 @@
+﻿@using GmeRecomendationSystem.Models;
+@model GmeRecomendationSystem.Models.SubjectRangeModel
+<!DOCTYPE HTML>
+<html>
+<head>
+    @await Html.PartialAsync("../Shared/MetaPartial")
+    <link rel="stylesheet" href="/css/profile_style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+</head>
+<body class="is-preload">
+    <div id="wrapper">
+        <header>
+            <div id="side-cont">
+                <div id="a"><a href="/Home/GoTo/about">Про застосунок</a></div>
+            </div>
+            <div id="nav">
+                <div id="a"><a href="/Library/Index">Бібліотека</a></div>
+                <div id="a"><a href="/Recommendation/Index">Рекомендації</a></div>
+                <div id="a"><a href="/Profile/Index">Профіль</a></div>
+            </div>
+            <div id="side-cont">
+                <div id="a"><a href="/Home/LogOut">Вихід</a></div>
+            </div>
+        </header>
+        <div id="delimeter">
+            <div id="left-del"></div>
+            <div id="right-del"></div>
+        </div>
+        <div id="content">
+            <div id="inner-set">
+                <div id="setting-add">
+                    <form id="sa-add-form">
+                        @Html.LabelFor(model => model.Name)
+                        @Html.EditorFor(model => model.Name, new {HtmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
+
+                        @Html.LabelFor(model => model.Score)
+                        @Html.EditorFor(model => model.Score, new {HtmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Score, "", new {@class = "text-danger"})
+
+                        @Html.LabelFor(model => model.ScoreK)
+                        @Html.EditorFor(model => model.ScoreK, new {HtmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.ScoreK, "", new {@class = "text-danger"})
+
+                        @Html.LabelFor(model => model.AssistsK)
+                        @Html.EditorFor(model => model.AssistsK, new {HtmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.AssistsK, "", new {@class = "text-danger"})
+
+                        @Html.LabelFor(model => model.WeightK)
+                        @Html.EditorFor(model => model.WeightK, new {HtmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.WeightK, "", new {@class = "text-danger"})
+
+                        @Html.LabelFor(model => model.UseTimeK)
+                        @Html.EditorFor(model => model.UseTimeK, new {HtmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.UseTimeK, "", new {@class = "text-danger"})
+                        <input type="submit" value="Додати" class="primary" formaction="/Settings/AddSA" />
+                    </form>
+                </div>
+                <div id="setting-set">
+                    <form id="sa-set-form">
+                        <select form="sa-set-form" name="sa">
+                            @foreach (SubjectRangeModel sa in (List<SubjectRangeModel>)ViewData["SA"])
+                            {
+                                @if (Convert.ToInt32(ViewData["SAID"]) == sa.SAID)
+                                {
+                                    <option value="@sa.SAID" selected="selected">@sa.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@sa.SAID">@sa.Name</option>
+                                }
+                            }
+                        </select>
+                        <div id="radio">
+                            <input id="use1" type="radio" name="inWork" value="on"/>
+                            <label for="use1">Відображати</label>
+                            <input id="use2" type="radio" name="inWork" value="off" />
+                            <label for="use2">Сховати</label>
+                        </div>
+                        <input type="submit" value="Оновити" class="primary" formaction="/Settings/SetSA" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("../Shared/ScriptsPartial")
+</body>
+</html>
+

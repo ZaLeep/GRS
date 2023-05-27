@@ -1,0 +1,79 @@
+﻿@model GmeRecomendationSystem.Models.ItemModel
+<!DOCTYPE HTML>
+<html>
+<head>
+    @await Html.PartialAsync("../Shared/MetaPartial")
+    <link rel="stylesheet" href="/css/profile_style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+</head>
+<body class="is-preload">
+    <div id="wrapper">
+        <header>
+            <div id="side-cont">
+                <div id="a"><a href="/Home/GoTo/about">Про застосунок</a></div>
+            </div>
+            <div id="nav">
+                <div id="a"><a href="/Library/Index">Бібліотека</a></div>
+                <div id="a"><a href="/Recommendation/Index">Рекомендації</a></div>
+                <div id="a"><a href="/Profile/Index">Профіль</a></div>
+            </div>
+            <div id="side-cont">
+                <div id="a"><a href="/Home/LogOut">Вихід</a></div>
+            </div>
+        </header>
+        <div id="delimeter">
+            <div id="left-del"></div>
+            <div id="right-del"></div>
+        </div>
+        <div id="content">
+            <div id="inner-item">
+                <h1>@Model.Title</h1>
+                <div id="item-content">
+                    <div id="item-left">
+                        <div id="item-img">
+                            <img src=@Model.ImageURL alt="">
+                        </div>
+                        <div id="item-rel">
+                            <p>@String.Format(Model.Author + ": " + Model.Release.ToString("MM/dd/yyyy"))</p>
+                        </div>
+                    </div>
+                    <div id="item-right">
+                        <div id="item-gen">
+                            <p>@Model.Genre</p>
+                        </div>
+                        <br />
+                        <div id="item-desc">
+                            <p>@Model.Description</p>
+                        </div>
+                        @if(Model.Checked)
+                        {
+                            <form id="item-form">
+                                <div class="range">
+                                    <p>0</p>
+                                    <p>@Model.MaxScore</p>
+                                </div>
+                                <input id="disabled" type="range" min="0" max=@Model.MaxScore step="1" name="score" value="@Model.Score">
+                                <input type="submit" value="Видалити" class="primary" formaction="/ItemPage/DeleteReview/@Model.Id" />
+                            </form>
+                        }
+                        else
+                        {
+                            <form id="item-form">
+                                <div class="range">
+                                    <p>0</p>
+                                    <p>@Model.MaxScore</p>
+                                </div>
+                                <input type="range" min="0" max=@Model.MaxScore step="1" name="score">
+                                <input type="submit" value="Додати" class="primary" formaction="/ItemPage/AddReview/@Model.Id" />
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("../Shared/ScriptsPartial")
+</body>
+</html>
+
