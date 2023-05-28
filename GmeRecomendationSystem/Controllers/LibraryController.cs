@@ -9,7 +9,7 @@ namespace GmeRecomendationSystem.Controllers
     public class LibraryController : Controller
 	{
         [Route("Index/{page?}")]
-        public async Task<IActionResult> Index(int page = 1)
+        public  IActionResult Index(int page = 1)
         {
             int i = 0;
             foreach (var claim in HttpContext.User.Claims)
@@ -18,12 +18,12 @@ namespace GmeRecomendationSystem.Controllers
                 i++;
             }
 
-            return View(await DBWork.GetLibraryItems(page, Convert.ToInt32(ViewData["0"]), Convert.ToInt32(ViewData["4"])));
+            return View( DBWork.GetLibraryItems(page, Convert.ToInt32(ViewData["0"]), Convert.ToInt32(ViewData["4"])));
         }
 
         [Route("Search/{search?}/{page?}")]
         [Route("Search/")]
-        public async Task<IActionResult> Search(string search = "", int page = 1)
+        public  IActionResult Search(string search = "", int page = 1)
         {
             int i = 0;
             foreach (var claim in HttpContext.User.Claims)
@@ -33,7 +33,7 @@ namespace GmeRecomendationSystem.Controllers
             }
             ViewData["search"] = search;
 
-            return View("Index", await DBWork.GetLibraryItems(search, page, Convert.ToInt32(ViewData["0"]), Convert.ToInt32(ViewData["4"])));
+            return View("Index",  DBWork.GetLibraryItems(search, page, Convert.ToInt32(ViewData["0"]), Convert.ToInt32(ViewData["4"])));
         }
     }
 }

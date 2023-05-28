@@ -21,7 +21,7 @@ namespace GmeRecomendationSystem.Controllers
         }
 
         [Route("Home/GoTo/{loc}")]
-        public async Task<IActionResult> GoTo(string loc)
+        public  IActionResult GoTo(string loc)
         {
             if(!(loc.Equals("about")) && User.Identity.IsAuthenticated)
             {
@@ -31,12 +31,12 @@ namespace GmeRecomendationSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LogIn(HomeFormsModel m)
+        public IActionResult LogIn(HomeFormsModel m)
         {
             ModelState.Remove("RegisterModel");
             if (ModelState.IsValid)
             {
-                int emailCount = await DBWork.CheckEmailExistence(m.LogInModel.Email);
+                int emailCount =  DBWork.CheckEmailExistence(m.LogInModel.Email);
                 if (emailCount == 0)
                 {
                     ViewBag.Error = "У базі ще не існує такої пошти.";
@@ -46,7 +46,7 @@ namespace GmeRecomendationSystem.Controllers
                 {
                     return View();
                 }
-                UserModel user = await DBWork.LogIn(m.LogInModel.Email, m.LogInModel.Password);
+                UserModel user =  DBWork.LogIn(m.LogInModel.Email, m.LogInModel.Password);
                 if (user == null)
                     return View();
                 if(user.Id == 0)
@@ -55,25 +55,25 @@ namespace GmeRecomendationSystem.Controllers
                     return Redirect("~/#login");
                 }
 
-                await Authenticate(user);
+                 Authenticate(user);
                 return RedirectToAction("Index", "Profile");
             }
             return View();
         }
         
-        public async Task<IActionResult> Register(HomeFormsModel m)
+        public IActionResult Register(HomeFormsModel m)
         {
             ModelState.Remove("LogInModel");
             if (ModelState.IsValid)
             {
-                UserModel user = await DBWork.Registrate(m.RegisterModel.NickName, m.RegisterModel.Email, m.RegisterModel.Password);
+                UserModel user =  DBWork.Registrate(m.RegisterModel.NickName, m.RegisterModel.Email, m.RegisterModel.Password);
                 if (user.Id == 0)
                 {
                     return Redirect("~/#register");
                 }
                 else
                 {
-                    await Authenticate(user);
+                     Authenticate(user);
                     return RedirectToAction("Index", "Profile");
                 }
             }
@@ -81,9 +81,9 @@ namespace GmeRecomendationSystem.Controllers
         }
         
         [HttpPost]
-        public async Task<JsonResult> CheckRegisterEmail(HomeFormsModel m)
+        public JsonResult CheckRegisterEmail(HomeFormsModel m)
         {
-            int emailCount = await DBWork.CheckEmailExistence(m.RegisterModel.Email);
+            int emailCount = DBWork.CheckEmailExistence(m.RegisterModel.Email);
             if (emailCount == 0)
                 return Json(true);
             if(emailCount == 1)
@@ -91,9 +91,9 @@ namespace GmeRecomendationSystem.Controllers
             return Json("Вибачайте: проблеми із базою даних.");
         }
 
-        private async Task Authenticate(UserModel user)
+        private void Authenticate(UserModel user)
         {
-            SubjectRangeModel SAModel = await DBWork.GetSubjectRange();
+            SubjectRangeModel SAModel = DBWork.GetSubjectRange();
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.Id.ToString()),
@@ -103,13 +103,13 @@ namespace GmeRecomendationSystem.Controllers
                 new Claim("SAID", SAModel.SAID.ToString())
             };
             ClaimsIdentity id = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
 
         [Authorize]
-        public async Task<IActionResult> Logout()
+        public  IActionResult Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
     }

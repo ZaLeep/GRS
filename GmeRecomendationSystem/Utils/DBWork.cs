@@ -9,7 +9,7 @@ namespace GmeRecomendationSystem.Utils
 		private const int PAGE_SIZE = 12;
 		private static SqlConnection DBconn = new SqlConnection("Data Source=SQL6031.site4now.net;Initial Catalog=db_a99fa3_urs;User Id=db_a99fa3_urs_admin;Password=35Jey_XL35");
 
-		public async static Task<SubjectRangeModel> GetSubjectRange()
+		public  static SubjectRangeModel GetSubjectRange()
 		{
             try
             {
@@ -32,7 +32,7 @@ namespace GmeRecomendationSystem.Utils
             }
             return new SubjectRangeModel();
         }
-		public async static Task<SubjectRangeModel> GetSubjectRange(int said)
+		public  static SubjectRangeModel GetSubjectRange(int said)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace GmeRecomendationSystem.Utils
             }
             return new SubjectRangeModel();
         }
-        public async static Task<List<SubjectRangeModel>> GetSubjectRanges(bool admin = false)
+        public  static List<SubjectRangeModel> GetSubjectRanges(bool admin = false)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace GmeRecomendationSystem.Utils
             }
             return new List<SubjectRangeModel>();
         }
-        public async static Task<int> GetSubjectRangeScore(int said)
+        public  static int GetSubjectRangeScore(int said)
 		{
             try
             {
@@ -105,7 +105,7 @@ namespace GmeRecomendationSystem.Utils
             }
             return -1;
         }
-        public async static Task AddSubjectRange(SubjectRangeModel model)
+        public  static void AddSubjectRange(SubjectRangeModel model)
         {
             try
             {
@@ -124,7 +124,7 @@ namespace GmeRecomendationSystem.Utils
                     DBconn.Close();
             }
         }
-        public async static Task SetSubjectRangeUse(int said, int set)
+        public  static void SetSubjectRangeUse(int said, int set)
         {
             try
             {
@@ -143,11 +143,11 @@ namespace GmeRecomendationSystem.Utils
             }
         }
 
-        public async static Task<ItemModel> GetItem(int itemID, int said, int userID)
+        public  static ItemModel GetItem(int itemID, int said, int userID)
 		{
 			try
 			{
-				int score = await GetSubjectRangeScore(said);
+				int score =  GetSubjectRangeScore(said);
 				string query;
 					query = string.Format("SELECT I.*, Ch.Score, Ch.ScoreRange FROM Item AS I " +
 							"LEFT JOIN (SELECT R.*, SR.ScoreRange FROM Review AS R LEFT JOIN SubjectRange AS SR ON R.SAID = SR.SAID " +
@@ -171,11 +171,11 @@ namespace GmeRecomendationSystem.Utils
 			return new ItemModel();
 		}
 
-        public async static Task<PageModel?> GetLibraryItems(int page, int userID, int said)
+        public  static PageModel? GetLibraryItems(int page, int userID, int said)
 		{
 			try
             {
-                int score = await GetSubjectRangeScore(said);
+                int score =  GetSubjectRangeScore(said);
                 string query;
 				query = string.Format("SELECT I.*, Ch.Score FROM Item AS I " +
 							"LEFT JOIN (SELECT * FROM Review WHERE UserID = {2} AND SAID = {3} AND IsApp = 1) AS Ch ON I.ItemID = Ch.ItemID " +
@@ -198,11 +198,11 @@ namespace GmeRecomendationSystem.Utils
             }
 			return null;
 		}
-        public async static Task<PageModel?> GetLibraryItems(string search, int page, int userID, int said)
+        public  static PageModel? GetLibraryItems(string search, int page, int userID, int said)
 		{
 			try
             {
-                int score = await GetSubjectRangeScore(said);
+                int score =  GetSubjectRangeScore(said);
                 search = search.ToLower();
 				string query;
 				query = string.Format("SELECT I.*, Ch.Score FROM Item AS I " +
@@ -227,7 +227,7 @@ namespace GmeRecomendationSystem.Utils
 
 		}
 
-        public async static Task<UserModel?> LogIn(string email, string password)
+        public  static UserModel? LogIn(string email, string password)
 		{
 			try
 			{
@@ -248,7 +248,7 @@ namespace GmeRecomendationSystem.Utils
             }
 			return null;
 		}
-        public async static Task<UserModel> Registrate(string username, string email, string password)
+        public  static UserModel Registrate(string username, string email, string password)
 		{
 			try
 			{
@@ -276,7 +276,7 @@ namespace GmeRecomendationSystem.Utils
 			}
 			return new UserModel();
 		}
-        public async static Task<int> CheckEmailExistence(string email)
+        public  static int CheckEmailExistence(string email)
 		{
 			try
 			{
@@ -297,11 +297,11 @@ namespace GmeRecomendationSystem.Utils
 			return -1;
 		}
 
-		public async static Task<PageModel?> GetCheckedItems(int userID, int page, int said)
+		public  static PageModel? GetCheckedItems(int userID, int page, int said)
         {
             try
             {
-                int score = await GetSubjectRangeScore(said);
+                int score =  GetSubjectRangeScore(said);
                 string query = string.Format("SELECT I.*, Ch.Score FROM Item AS I " +
                                "LEFT JOIN (SELECT * FROM Review WHERE UserID = {2} AND SAID = {3} AND IsApp = 1) AS Ch ON I.ItemID = Ch.ItemID " +
                                "WHERE I.ItemID IN (SELECT ItemID FROM Review WHERE UserID = {2} AND SAID = {3} AND IsApp = 1) AND I.SAID = {3}" +
@@ -322,11 +322,11 @@ namespace GmeRecomendationSystem.Utils
             }
             return null;
         }
-        public async static Task<PageModel?> GetCheckedItems(int userID, string search, int page, int said)
+        public  static PageModel? GetCheckedItems(int userID, string search, int page, int said)
         {
             try
             {
-                int score = await GetSubjectRangeScore(said);
+                int score =  GetSubjectRangeScore(said);
                 search = search.ToLower();
                 string query = string.Format("SELECT I.*, Ch.Score FROM Item AS I " +
 							   "LEFT JOIN (SELECT * FROM Review WHERE UserID = {3} AND SAID = {4} AND IsApp = 1) AS Ch ON I.ItemID = Ch.ItemID " +
@@ -350,7 +350,7 @@ namespace GmeRecomendationSystem.Utils
             return null;
         }
 
-        public async static Task<PageModel?> GetCheckedItems(int userID, int said)
+        public  static PageModel? GetCheckedItems(int userID, int said)
         {
             try
             {
@@ -375,11 +375,11 @@ namespace GmeRecomendationSystem.Utils
             }
             return null;
         }
-        public async static Task<PageModel?> GetRecomendedItems(int userID, int page, int said)
+        public  static PageModel? GetRecomendedItems(int userID, int page, int said)
 		{
 			try
             {
-                int score = await GetSubjectRangeScore(said);
+                int score =  GetSubjectRangeScore(said);
                 string query = string.Format("SELECT I.*, Ch.Score, Rec.Score AS RecScore FROM Item AS I " +
 							   "LEFT JOIN (SELECT * FROM Review WHERE UserID = {2} AND SAID = {3} AND IsApp = 1) AS Ch ON I.ItemID = Ch.ItemID AND I.SAID = Ch.SAID " +
 							   "LEFT JOIN (SELECT * FROM Recommendation WHERE UserID = {2}) AS Rec ON I.ItemID = Rec.ItemID AND I.SAID = Rec.SAID " +
@@ -401,11 +401,11 @@ namespace GmeRecomendationSystem.Utils
             }
 			return null;
 		}
-        public async static Task<PageModel?> GetRecomendedItems(int userID, string search, int page, int said)
+        public  static PageModel? GetRecomendedItems(int userID, string search, int page, int said)
 		{
 			try
             {
-                int score = await GetSubjectRangeScore(said);
+                int score =  GetSubjectRangeScore(said);
                 search = search.ToLower();
                 string query = string.Format("SELECT I.*, Ch.Score FROM Item AS I " +
 							   "LEFT JOIN (SELECT * FROM Review WHERE UserID = {3} AND SAID = {4} AND IsApp = 1) AS Ch ON I.ItemID = Ch.ItemID " +
@@ -429,7 +429,7 @@ namespace GmeRecomendationSystem.Utils
 			return null;
 		}
 
-        public async static Task SetCheckedItem(int gameID, int userID, int said, int score)
+        public  static void SetCheckedItem(int gameID, int userID, int said, int score)
 		{
 			try
 			{
@@ -448,7 +448,7 @@ namespace GmeRecomendationSystem.Utils
                     DBconn.Close();
             }
 		}
-        public async static Task UnsetCheckedItem(int gameID, int userID, int said)
+        public  static void UnsetCheckedItem(int gameID, int userID, int said)
 		{
 			try
 			{
@@ -467,7 +467,7 @@ namespace GmeRecomendationSystem.Utils
             }
 		}
 
-        public async static Task<int> GetCheckedItemsCount(int userID, int said)
+        public  static int GetCheckedItemsCount(int userID, int said)
 		{
 			try
 			{
@@ -562,7 +562,7 @@ namespace GmeRecomendationSystem.Utils
             }
 			return new List<string>();
 		}
-        public async static Task SetRecommendations(int userID, List<KeyValuePair<int, float>> game_score, int said)
+        public  static void SetRecommendations(int userID, List<KeyValuePair<int, float>> game_score, int said)
 		{
 			try
 			{
