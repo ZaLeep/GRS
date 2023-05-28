@@ -65,11 +65,7 @@ namespace GmeRecomendationSystem.Utils
             string query = string.Format("SELECT TOP 1 * FROM SubjectRange ORDER BY SAID");
             SqlDataReader reader = ExecReader(query);
             if(reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return new SubjectRangeModel();
-            }
             List<SubjectRangeModel> SA = ModelParser.ParseSA(reader);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -80,11 +76,7 @@ namespace GmeRecomendationSystem.Utils
             string query = string.Format("SELECT * FROM SubjectRange WHERE SAID = {0}", said);
             SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return new SubjectRangeModel();
-            }
             List<SubjectRangeModel> SA = ModelParser.ParseSA(reader);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -99,11 +91,7 @@ namespace GmeRecomendationSystem.Utils
                 query = string.Format("SELECT * FROM SubjectRange WHERE InWork = 1");
             SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return new List<SubjectRangeModel>();
-            }
             List<SubjectRangeModel> SA = ModelParser.ParseSA(reader);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -112,14 +100,9 @@ namespace GmeRecomendationSystem.Utils
         public  static int GetSubjectRangeScore(int said)
 		{
             string query = string.Format("SELECT ScoreRange FROM SubjectRange WHERE SAID = {0}", said);
-            SqlCommand command = new SqlCommand(query, DBconn);
             SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return -1;
-            }
             reader.Read();
 			int score = reader.GetInt32(0);
             if (DBconn.State == System.Data.ConnectionState.Open)
@@ -130,7 +113,6 @@ namespace GmeRecomendationSystem.Utils
         {
             string query = string.Format("INSERT INTO SubjectRange(SubjectName, ScoreRange, ScoreK, AssistsK, WeightK, UseTimeK, InWork) " +
 										"VALUES('{0}', {1}, {2}, {3}, {4}, {5}, 0)", model.Name, model.Score, model.ScoreK.ToString(CultureInfo.InvariantCulture), model.AssistsK.ToString(CultureInfo.InvariantCulture), model.WeightK.ToString(CultureInfo.InvariantCulture), model.UseTimeK.ToString(CultureInfo.InvariantCulture));
-            SqlCommand command = new SqlCommand(query, DBconn);
             ExecNonQuery(query);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -152,11 +134,7 @@ namespace GmeRecomendationSystem.Utils
                            "WHERE I.ItemID = {0} AND I.SAID = {2}", itemID, userID, said);
 			SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return new ItemModel();
-            }
             PageModel page = ModelParser.ParsePage(reader, 0, 0, score);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -172,11 +150,7 @@ namespace GmeRecomendationSystem.Utils
 						"ORDER BY ItemID OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", PAGE_SIZE * (page - 1), PAGE_SIZE + 1, userID, said);
 			SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return null;
-            }
             PageModel pageModel = ModelParser.ParsePage(reader, page, PAGE_SIZE, score);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -192,11 +166,7 @@ namespace GmeRecomendationSystem.Utils
                         "ORDER BY ItemID OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", PAGE_SIZE * (page - 1), PAGE_SIZE + 1, searchLow, userID, said);
 			SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return null;
-            }
             PageModel pageModel = ModelParser.ParsePage(reader, page, PAGE_SIZE, score);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -209,11 +179,7 @@ namespace GmeRecomendationSystem.Utils
 			string query = string.Format("SELECT * FROM AppAccount WHERE Email = '{0}'", email);
 			SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return null;
-            }
             UserModel userModel = ModelParser.ParseUser(reader, password);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -228,11 +194,7 @@ namespace GmeRecomendationSystem.Utils
 			query = string.Format("SELECT * FROM AppAccount WHERE Email = '{0}'", email);
 			SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return new UserModel();
-            }
             UserModel userModel = ModelParser.ParseUser(reader);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -243,11 +205,7 @@ namespace GmeRecomendationSystem.Utils
 			string query = string.Format("SELECT COUNT(UserID) FROM AppAccount WHERE Email = '{0}'", email);
 			int? count = (int?)ExecScalar(query);
             if (count is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return -1;
-            }
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
 			return count;
@@ -262,11 +220,7 @@ namespace GmeRecomendationSystem.Utils
                            "ORDER BY ItemID OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", PAGE_SIZE * (page - 1), PAGE_SIZE + 1, userID, said);
             SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return null;
-            }
             PageModel pageModel = ModelParser.ParsePage(reader, page, PAGE_SIZE, score);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -283,11 +237,7 @@ namespace GmeRecomendationSystem.Utils
                            "ORDER BY ItemID OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", PAGE_SIZE * (page - 1), PAGE_SIZE + 1, searchLow, userID, said);
             SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return null;
-            }
             PageModel pageModel = ModelParser.ParsePage(reader, page, PAGE_SIZE, score);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -302,11 +252,7 @@ namespace GmeRecomendationSystem.Utils
                            "ORDER BY ItemID", userID, said);
             SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return null;
-            }
             PageModel pageModel = ModelParser.ParsePage(reader, -1, -1, said);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -322,11 +268,7 @@ namespace GmeRecomendationSystem.Utils
                            "ORDER BY RecScore DESC OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", PAGE_SIZE * (page - 1), PAGE_SIZE + 1, userID, said);
 			SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return null;
-            }
             PageModel pageModel = ModelParser.ParsePage(reader, page, PAGE_SIZE, said);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -343,11 +285,7 @@ namespace GmeRecomendationSystem.Utils
 					   "ORDER BY ItemID OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", PAGE_SIZE * (page - 1), PAGE_SIZE + 1, searchLow, userID, said);
 			SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return null;
-            }
             PageModel pageModel = ModelParser.ParsePage(reader, page, PAGE_SIZE, score);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -375,11 +313,7 @@ namespace GmeRecomendationSystem.Utils
 			string query = string.Format("SELECT COUNT(ItemID) FROM Review WHERE UserID = {0} AND SAID = {1} AND IsApp = 1", userID, said);
 			int? gamesCount = (int?)ExecScalar(query);
             if (gamesCount is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return 0;
-            }
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
 			return gamesCount;
@@ -393,11 +327,7 @@ namespace GmeRecomendationSystem.Utils
 				"WHERE ItemID IN (SELECT ItemID FROM Review WHERE UserID = {0} AND SAID = {1}) AND SAID = {1}) AND R.SAID = {1}", userID, said);
 			SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return new List<ReviewModel>();
-            }
             List<ReviewModel> reviewModels = ModelParser.ParseReviews(reader, checkedGames, ref userSim);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -414,11 +344,7 @@ namespace GmeRecomendationSystem.Utils
 			query += string.Format(")) AND SAID = {0} ORDER BY Assists DESC", said);
 			SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return new List<ReviewModel>();
-            }
             List<ReviewModel> reviewModels = ModelParser.ParseReviews(reader, checkedGames, ref userSim);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();
@@ -431,11 +357,7 @@ namespace GmeRecomendationSystem.Utils
 				"WHERE ItemID IN (SELECT ItemID FROM Review WHERE UserID = {0} AND SAID = {1} AND IsApp = 1)", userID, said);
 			SqlDataReader reader = ExecReader(query);
             if (reader is null)
-            {
-                if (DBconn.State == System.Data.ConnectionState.Open)
-                    DBconn.Close();
                 return new List<string>();
-            }
             List<string> genres = ModelParser.ParseGenre(reader);
             if (DBconn.State == System.Data.ConnectionState.Open)
                 DBconn.Close();

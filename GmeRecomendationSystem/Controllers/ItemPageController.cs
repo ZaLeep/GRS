@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using GmeRecomendationSystem.Utils;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace GmeRecomendationSystem.Controllers
 {
@@ -10,39 +11,24 @@ namespace GmeRecomendationSystem.Controllers
 	{
 		[Route("Index/{Id}")]
 		public  IActionResult Index(int Id)
-		{
-            int i = 0;
-            foreach (var claim in HttpContext.User.Claims)
-            {
-                ViewData[Convert.ToString(i)] = claim.Value;
-                i++;
-            }
+        {
+            HomeController.UserContext(User.Identity as ClaimsIdentity, ViewData);
             return View( DBWork.GetItem(Id, Convert.ToInt32(ViewData["4"]), Convert.ToInt32(ViewData["0"])));
         }
 
         [Route("AddReview/{Id}")]
         public  IActionResult AddReview(int Id, int score)
         {
-            int i = 0;
-            foreach (var claim in HttpContext.User.Claims)
-            {
-                ViewData[Convert.ToString(i)] = claim.Value;
-                i++;
-            }
-             DBWork.SetCheckedItem(Id, Convert.ToInt32(ViewData["0"]), Convert.ToInt32(ViewData["4"]), score);
+            HomeController.UserContext(User.Identity as ClaimsIdentity, ViewData);
+            DBWork.SetCheckedItem(Id, Convert.ToInt32(ViewData["0"]), Convert.ToInt32(ViewData["4"]), score);
             return View("Index",  DBWork.GetItem(Id, Convert.ToInt32(ViewData["4"]), Convert.ToInt32(ViewData["0"])));
         }
 
         [Route("DeleteReview/{Id}")]
         public  IActionResult DeleteReview(int Id)
         {
-            int i = 0;
-            foreach (var claim in HttpContext.User.Claims)
-            {
-                ViewData[Convert.ToString(i)] = claim.Value;
-                i++;
-            }
-             DBWork.UnsetCheckedItem(Id, Convert.ToInt32(ViewData["0"]), Convert.ToInt32(ViewData["4"]));
+            HomeController.UserContext(User.Identity as ClaimsIdentity, ViewData);
+            DBWork.UnsetCheckedItem(Id, Convert.ToInt32(ViewData["0"]), Convert.ToInt32(ViewData["4"]));
             return View("Index",  DBWork.GetItem(Id, Convert.ToInt32(ViewData["4"]), Convert.ToInt32(ViewData["0"])));
         }
     }

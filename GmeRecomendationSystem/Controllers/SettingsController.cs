@@ -2,6 +2,7 @@
 using GmeRecomendationSystem.Models;
 using GmeRecomendationSystem.Utils;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace GmeRecomendationSystem.Controllers
 {
@@ -12,12 +13,7 @@ namespace GmeRecomendationSystem.Controllers
         [Route("Index/")]
         public  IActionResult Index()
         {
-            int i = 0;
-            foreach (var claim in HttpContext.User.Claims)
-            {
-                ViewData[Convert.ToString(i)] = claim.Value;
-                i++;
-            }
+            HomeController.UserContext(User.Identity as ClaimsIdentity, ViewData);
             ViewData["SA"] =  DBWork.GetSubjectRanges(true);
             ViewData["SAID"] = Convert.ToInt32(ViewData["4"]);
             if (ViewData["1"].ToString().Equals("admin"))
@@ -33,12 +29,7 @@ namespace GmeRecomendationSystem.Controllers
         [Route("AddSA/")]
         public  IActionResult AddSA(SubjectRangeModel model)
         {
-            int i = 0;
-            foreach (var claim in HttpContext.User.Claims)
-            {
-                ViewData[Convert.ToString(i)] = claim.Value;
-                i++;
-            }
+            HomeController.UserContext(User.Identity as ClaimsIdentity, ViewData);
             if (ViewData["1"].ToString().Equals("admin"))
             {
                  DBWork.AddSubjectRange(model);

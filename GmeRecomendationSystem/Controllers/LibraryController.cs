@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using GmeRecomendationSystem.Utils;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace GmeRecomendationSystem.Controllers
 {
@@ -11,12 +12,7 @@ namespace GmeRecomendationSystem.Controllers
         [Route("Index/{page?}")]
         public  IActionResult Index(int page = 1)
         {
-            int i = 0;
-            foreach (var claim in HttpContext.User.Claims)
-            {
-                ViewData[Convert.ToString(i)] = claim.Value;
-                i++;
-            }
+            HomeController.UserContext(User.Identity as ClaimsIdentity, ViewData);
 
             return View( DBWork.GetLibraryItems(page, Convert.ToInt32(ViewData["0"]), Convert.ToInt32(ViewData["4"])));
         }
@@ -25,12 +21,7 @@ namespace GmeRecomendationSystem.Controllers
         [Route("Search/")]
         public  IActionResult Search(string search = "", int page = 1)
         {
-            int i = 0;
-            foreach (var claim in HttpContext.User.Claims)
-            {
-                ViewData[Convert.ToString(i)] = claim.Value;
-                i++;
-            }
+            HomeController.UserContext(User.Identity as ClaimsIdentity, ViewData);
             ViewData["search"] = search;
 
             return View("Index",  DBWork.GetLibraryItems(search, page, Convert.ToInt32(ViewData["0"]), Convert.ToInt32(ViewData["4"])));

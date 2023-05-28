@@ -5,6 +5,7 @@ using GmeRecomendationSystem.Models;
 using GmeRecomendationSystem.Utils;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace GmeRecomendationSystem.Controllers
 {
@@ -111,6 +112,16 @@ namespace GmeRecomendationSystem.Controllers
         {
              HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
+        }
+
+        public static void UserContext(ClaimsIdentity identity, ViewDataDictionary ViewData)
+        {
+            int i = 0;
+            foreach (var claim in identity.Claims)
+            {
+                ViewData[Convert.ToString(i)] = claim.Value;
+                i++;
+            }
         }
     }
 }

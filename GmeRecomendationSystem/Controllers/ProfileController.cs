@@ -14,14 +14,8 @@ namespace GmeRecomendationSystem.Controllers
 	{
         [Route("Index/{page?}")]
         public  IActionResult Index(int page = 1)
-		{
-			int i = 0;
-            var identity = User.Identity as ClaimsIdentity;
-            foreach (var claim in identity.Claims)
-			{
-				ViewData[Convert.ToString(i)] = claim.Value;
-				i++;
-            }
+        {
+            HomeController.UserContext(User.Identity as ClaimsIdentity, ViewData);
             ViewData["SA"] =  DBWork.GetSubjectRanges();
             ViewData["SAID"] = Convert.ToInt32(ViewData["4"]);
 
@@ -33,12 +27,7 @@ namespace GmeRecomendationSystem.Controllers
         [Route("Search/")]
         public  IActionResult Search(string search = "", int page = 1)
         {
-            int i = 0;
-            foreach (var claim in HttpContext.User.Claims)
-            {
-                ViewData[Convert.ToString(i)] = claim.Value;
-                i++;
-            }
+            HomeController.UserContext(User.Identity as ClaimsIdentity, ViewData);
             ViewData["search"] = search;
             ViewData["SA"] =  DBWork.GetSubjectRanges();
 
@@ -48,13 +37,6 @@ namespace GmeRecomendationSystem.Controllers
         [Route("ChangeSA")]
         public  IActionResult ChangeSA(int sa)
         {
-            int i = 0;
-            var identity = User.Identity as ClaimsIdentity;
-            foreach (var claim in identity.Claims)
-            {
-                ViewData[Convert.ToString(i)] = claim.Value;
-                i++;
-            }
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, ViewData["0"].ToString()),

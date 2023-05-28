@@ -171,5 +171,5 @@ namespace GmeRecomendationSystem.Utils
 			double zai = (Math.Sqrt(a_l) * Math.Sqrt(b_l));
 			return zai == 0 ? 0 : cos / zai;
         }
-    }
+	}
 }
