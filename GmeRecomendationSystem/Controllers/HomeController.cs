@@ -36,7 +36,7 @@ namespace GmeRecomendationSystem.Controllers
             ModelState.Remove("RegisterModel");
             if (ModelState.IsValid)
             {
-                int emailCount =  DBWork.CheckEmailExistence(m.LogInModel.Email);
+                int? emailCount =  DBWork.CheckEmailExistence(m.LogInModel.Email);
                 if (emailCount == 0)
                 {
                     ViewBag.Error = "У базі ще не існує такої пошти.";
@@ -83,7 +83,7 @@ namespace GmeRecomendationSystem.Controllers
         [HttpPost]
         public JsonResult CheckRegisterEmail(HomeFormsModel m)
         {
-            int emailCount = DBWork.CheckEmailExistence(m.RegisterModel.Email);
+            int? emailCount = DBWork.CheckEmailExistence(m.RegisterModel.Email);
             if (emailCount == 0)
                 return Json(true);
             if(emailCount == 1)
