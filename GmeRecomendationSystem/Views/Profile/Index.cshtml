@@ -54,7 +54,7 @@
                     }
                 </div>
                 <form id="search-form">
-                    <input type="text" name="search" value="@ViewData["search"]" />
+                    <input type="text" name="search" value="@(ViewData.ContainsKey("search")?@ViewData["search"]:"")" />
                     <input type="submit" value="Пошук" class="primary" formaction="/Profile/Search" />
                 </form>
             </div>
@@ -95,7 +95,14 @@
                             }
                             else
                             {
-                                <a href="/Profile/Index/@Convert.ToString(Model.Id-1)"><i class="fa fa-angle-double-left"></i></a>
+                                @if (ViewData.ContainsKey("search"))
+                                {
+                                    <a href="/Profile/Search/@ViewData["search"]/@Convert.ToString(Model.Id-1)"><i class="fa fa-angle-double-left"></i></a>
+                                }
+                                else
+                                {
+                                    <a href="/Profile/Index/@Convert.ToString(Model.Id-1)"><i class="fa fa-angle-double-left"></i></a>
+                                }
                             }
                         </div>
                         <div id="a">
@@ -108,7 +115,14 @@
                             }
                             else
                             {
-                                <a href="/Profile/Index/@Convert.ToString(Model.Id+1)"><i class="fa fa-angle-double-right"></i></a>
+                                @if (ViewData.ContainsKey("search"))
+                                {
+                                    <a href="/Profile/Search/@ViewData["search"]/@Convert.ToString(Model.Id+1)"><i class="fa fa-angle-double-right"></i></a>
+                                }
+                                else
+                                {
+                                    <a href="/Profile/Index/@Convert.ToString(Model.Id+1)"><i class="fa fa-angle-double-right"></i></a>
+                                }
                             }
                         </div>
                     </div>

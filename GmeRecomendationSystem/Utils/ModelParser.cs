@@ -92,7 +92,7 @@ namespace GmeRecomendationSystem.Utils
 		{
 			reader.Read();
 			UserModel u = new UserModel();
-			u.Id = reader.GetInt32(0);
+			u.Id = reader.GetDecimal(0);
 			u.UserName = reader.GetString(1);
 			u.UserEmail = reader.GetString(2);
             u.Role = reader.GetString(4);

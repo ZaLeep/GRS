@@ -18,7 +18,7 @@ namespace GmeRecomendationSystem.Models
         [Required(ErrorMessage = "Чогось не вистачає.")]
         [DataType(DataType.Password)]
         [StringLength(32, MinimumLength = 8, ErrorMessage = "Пароль має бути хоча б 8 символів, але не більше 32.")]
-        [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*_-s]).{8,}$", ErrorMessage = "Використай великі та маленькі літері англійського алфавіту, цифри та спеціальні символи:#?!@$%^&*_-")]
+        [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*_-]).{8,}$", ErrorMessage = "Використай великі та маленькі літері англійського алфавіту, цифри та спеціальні символи:#?!@$%^&*_-")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Пароль слід повторити.")]

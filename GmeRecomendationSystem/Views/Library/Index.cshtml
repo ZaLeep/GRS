@@ -33,7 +33,7 @@
                     <h1>Бібліотека</h1>
                 </div>
                 <form id="search-form">
-                        <input type="text" name="search" value="@ViewData["search"]"/>
+                    <input type="text" name="search" value="@(ViewData.ContainsKey("search")?@ViewData["search"]:"")" />
                     <input type="submit" value="Пошук" class="primary" formaction="/Library/Search" />
                 </form>
             </div>

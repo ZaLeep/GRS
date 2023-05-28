@@ -327,9 +327,10 @@ namespace GmeRecomendationSystem.Utils
             try
             {
                 int score = await GetSubjectRangeScore(said);
+                search = search.ToLower();
                 string query = string.Format("SELECT I.*, Ch.Score FROM Item AS I " +
 							   "LEFT JOIN (SELECT * FROM Review WHERE UserID = {3} AND SAID = {4} AND IsApp = 1) AS Ch ON I.ItemID = Ch.ItemID " +
-                               "WHERE LOWER(Title) LIKE '%{2}%' AND I.SAID = {4} AND" +
+                               "WHERE LOWER(Title) LIKE '%{2}%' AND I.SAID = {4} AND " +
                                "I.ItemID IN(SELECT ItemID FROM Review WHERE UserID = {3} AND SAID = {4} AND IsApp = 1) " +
                                "ORDER BY ItemID OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", PAGE_SIZE * (page - 1), PAGE_SIZE + 1, search, userID, said);
                 if (DBconn.State == System.Data.ConnectionState.Closed)
@@ -406,6 +407,7 @@ namespace GmeRecomendationSystem.Utils
 			try
             {
                 int score = await GetSubjectRangeScore(said);
+                search = search.ToLower();
                 string query = string.Format("SELECT I.*, Ch.Score FROM Item AS I " +
 							   "LEFT JOIN (SELECT * FROM Review WHERE UserID = {3} AND SAID = {4} AND IsApp = 1) AS Ch ON I.ItemID = Ch.ItemID " +
 							   "WHERE LOWER(Title) LIKE '%{2}%' AND " +
@@ -432,7 +434,8 @@ namespace GmeRecomendationSystem.Utils
 		{
 			try
 			{
-				if (DBconn.State == System.Data.ConnectionState.Closed)
+                UnsetCheckedItem(gameID, userID, said);
+                if (DBconn.State == System.Data.ConnectionState.Closed)
                     DBconn.Open();
 				string query = string.Format("INSERT INTO Review(UserID, ItemID, Score, SAID, IsApp) VALUES({0}, {1}, {2}, {3}, 1)", userID, gameID, score, said);
 				SqlCommand command = new SqlCommand(query, DBconn);
