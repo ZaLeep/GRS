@@ -203,12 +203,12 @@ namespace GmeRecomendationSystem.Utils
 			try
             {
                 int score =  GetSubjectRangeScore(said);
-                search = search.ToLower();
+                string searchLow = search.ToLower();
 				string query;
 				query = string.Format("SELECT I.*, Ch.Score FROM Item AS I " +
 							"LEFT JOIN (SELECT * FROM Review WHERE UserID = {3} AND SAID = {4} AND IsApp = 1) AS Ch ON I.ItemID = Ch.ItemID " +
 							"WHERE LOWER(Title) LIKE '%{2}%' AND I.SAID = {4}" +
-                            "ORDER BY ItemID OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", PAGE_SIZE * (page - 1), PAGE_SIZE + 1, search, userID, said);
+                            "ORDER BY ItemID OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", PAGE_SIZE * (page - 1), PAGE_SIZE + 1, searchLow, userID, said);
                 if (DBconn.State == System.Data.ConnectionState.Closed)
                     DBconn.Open();
                 SqlCommand command = new SqlCommand(query, DBconn);
@@ -327,12 +327,12 @@ namespace GmeRecomendationSystem.Utils
             try
             {
                 int score =  GetSubjectRangeScore(said);
-                search = search.ToLower();
+                string searchLow = search.ToLower();
                 string query = string.Format("SELECT I.*, Ch.Score FROM Item AS I " +
 							   "LEFT JOIN (SELECT * FROM Review WHERE UserID = {3} AND SAID = {4} AND IsApp = 1) AS Ch ON I.ItemID = Ch.ItemID " +
                                "WHERE LOWER(Title) LIKE '%{2}%' AND I.SAID = {4} AND " +
                                "I.ItemID IN(SELECT ItemID FROM Review WHERE UserID = {3} AND SAID = {4} AND IsApp = 1) " +
-                               "ORDER BY ItemID OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", PAGE_SIZE * (page - 1), PAGE_SIZE + 1, search, userID, said);
+                               "ORDER BY ItemID OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", PAGE_SIZE * (page - 1), PAGE_SIZE + 1, searchLow, userID, said);
                 if (DBconn.State == System.Data.ConnectionState.Closed)
                     DBconn.Open();
                 SqlCommand command = new SqlCommand(query, DBconn);
@@ -406,12 +406,12 @@ namespace GmeRecomendationSystem.Utils
 			try
             {
                 int score =  GetSubjectRangeScore(said);
-                search = search.ToLower();
+                string searchLow = search.ToLower();
                 string query = string.Format("SELECT I.*, Ch.Score FROM Item AS I " +
 							   "LEFT JOIN (SELECT * FROM Review WHERE UserID = {3} AND SAID = {4} AND IsApp = 1) AS Ch ON I.ItemID = Ch.ItemID " +
 							   "WHERE LOWER(Title) LIKE '%{2}%' AND " +
 							   "I.ItemID IN(SELECT ItemID FROM Recommendation WHERE UserID = {3} AND SAID = {4}) " +
-							   "ORDER BY ItemID OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", PAGE_SIZE * (page - 1), PAGE_SIZE + 1, search, userID, said);
+							   "ORDER BY ItemID OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY", PAGE_SIZE * (page - 1), PAGE_SIZE + 1, searchLow, userID, said);
 				if (DBconn.State == System.Data.ConnectionState.Closed)
                     DBconn.Open();
 				SqlCommand command = new SqlCommand(query, DBconn);
