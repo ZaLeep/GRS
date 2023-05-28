@@ -354,7 +354,6 @@ namespace GmeRecomendationSystem.Utils
         {
             try
             {
-                int score = await GetSubjectRangeScore(said);
                 string query = string.Format("SELECT I.*, Ch.Score FROM Item AS I " +
                                "LEFT JOIN (SELECT * FROM Review WHERE UserID = {0} AND SAID = {1} AND IsApp = 1) AS Ch ON I.ItemID = Ch.ItemID " +
                                "WHERE I.ItemID IN (SELECT ItemID FROM Review WHERE UserID = {0} AND SAID = {1} AND IsApp = 1) AND I.SAID = {1}" +
@@ -581,8 +580,10 @@ namespace GmeRecomendationSystem.Utils
 				{
 					query += string.Format(" ({0}, {1}, {2}, {3}),", userID, game_score[i].Key, game_score[i].Value.ToString(CultureInfo.InvariantCulture), said);
 					limit--;
-					if (limit == 1)
-						break;
+                    if (limit == 1)
+                    {
+                        break;
+                    }
 				}
 				query += string.Format(" ({0}, {1}, {2}, {3})", userID, game_score[count].Key, game_score[count].Value.ToString(CultureInfo.InvariantCulture), said);
 				command = new SqlCommand(query, DBconn);

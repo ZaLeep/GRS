@@ -16,7 +16,7 @@ namespace GmeRecomendationSystem.Utils
 			}
 			List<ReviewModel> reviews = DBWork.GetReviewsByUsers(userID, checkedGames, ref userSimilarity, said);
 
-			List<string> genres = new List<string>();
+			List<string> genres;
 			Dictionary<int, float> game_score = new Dictionary<int, float>();
             genres = DBWork.GetGenres(userID, said);
 			foreach (ReviewModel rev in reviews)

@@ -43,7 +43,9 @@ namespace GmeRecomendationSystem.Controllers
                     return Redirect("~/#login");
                 }
                 if (emailCount == -1)
+                {
                     return View();
+                }
                 UserModel user = await DBWork.LogIn(m.LogInModel.Email, m.LogInModel.Password);
                 if (user == null)
                     return View();
@@ -66,7 +68,9 @@ namespace GmeRecomendationSystem.Controllers
             {
                 UserModel user = await DBWork.Registrate(m.RegisterModel.NickName, m.RegisterModel.Email, m.RegisterModel.Password);
                 if (user.Id == 0)
+                {
                     return Redirect("~/#register");
+                }
                 else
                 {
                     await Authenticate(user);

@@ -103,7 +103,9 @@ namespace GmeRecomendationSystem.Utils
 			List<int> IDs = new List<int>();
 			while (reader.Read())
 				if (!IDs.Contains(reader.GetInt32(0)))
+				{
 					IDs.Add(reader.GetInt32(0));
+				}
 			return IDs;
 		}
         public static List<string> ParseGenre(SqlDataReader reader)
@@ -115,9 +117,13 @@ namespace GmeRecomendationSystem.Utils
 				foreach (string gen in genre)
 				{
 					string[] genre_ = reader.GetString(0).Split(';');
-                    foreach (string gen_ in genre_)
-                        if (!genres.Contains(gen_))
-                            genres.Add(gen_);
+					foreach (string gen_ in genre_)
+					{
+						if (!genres.Contains(gen_))
+						{
+							genres.Add(gen_);
+						}
+					}
                 }
 			}
 			return genres;
