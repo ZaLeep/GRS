@@ -5,7 +5,6 @@
     @await Html.PartialAsync("../Shared/MetaPartial")
     <link rel="stylesheet" href="/css/profile_style.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
 </head>
 <body class="is-preload">
     <div id="wrapper">
@@ -74,6 +73,9 @@
         </div>
     </div>
     @await Html.PartialAsync("../Shared/ScriptsPartial")
+    <script>
+        history.replaceState(null, null, '@ViewData["Prev"].ToString()');
+    </script>
 </body>
 </html>
 
