@@ -62,6 +62,11 @@
                             @Html.LabelFor(model => model.LogInModel.Password)
                             @Html.EditorFor(model => model.LogInModel.Password, new {HtmlAttributes = new {@class = "form-control"}})
                             @Html.ValidationMessageFor(model => model.LogInModel.Password, "", new {@class = "text-danger"})
+
+                            @if(ViewData.ContainsKey("Error"))
+                            {
+                                <lable>@ViewData["Error"]</lable>
+                            }
                         </div>
                         <input type="submit" value="Авторизуватись" class="primary" formaction="/Home/LogIn" />
                         @if(ViewBag.Error != null)

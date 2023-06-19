@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using GmeRecomendationSystem.Controllers.Filters;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 
 namespace GmeRecomendationSystem
 {
@@ -6,7 +9,7 @@ namespace GmeRecomendationSystem
     {
         public void ConfigureServices(IServiceCollection services)
         {
-			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 				.AddCookie(options =>
 				{
 					options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Home/LoginPage");
@@ -15,7 +18,15 @@ namespace GmeRecomendationSystem
                     options.LogoutPath = new Microsoft.AspNetCore.Http.PathString("/Home/LogOut");
 				});
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(SingleActionAttribute));
+                options.Filters.Add(new ResponseCacheAttribute
+                {
+                    NoStore = true,
+                    Location = ResponseCacheLocation.None,
+                });
+            });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -23,7 +34,6 @@ namespace GmeRecomendationSystem
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseRouting();
             app.UseStaticFiles();
             app.UseAuthentication();

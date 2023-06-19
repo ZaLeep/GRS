@@ -37,6 +37,7 @@ namespace GmeRecomendationSystem.Controllers
         [Route("ChangeSA")]
         public  IActionResult ChangeSA(int sa)
         {
+            HomeController.UserContext(User.Identity as ClaimsIdentity, ViewData);
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, ViewData["0"].ToString()),
