@@ -7,7 +7,7 @@ namespace GmeRecomendationSystem.Utils
 	internal static class DBWork
 	{
 		private const int PAGE_SIZE = 12;
-		private static SqlConnection DBconn = new SqlConnection("Server=DESKTOP-IQSG49S;Database=URS;Trusted_Connection=True;TrustServerCertificate=True");
+		private static SqlConnection DBconn = new SqlConnection("Data Source=SQL6031.site4now.net;Initial Catalog=db_a99fa3_urs;User Id=db_a99fa3_urs_admin;Password=35Jey_XL35");
 
         private static SqlDataReader? ExecReader(string query)
         {

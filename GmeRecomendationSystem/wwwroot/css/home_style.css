@@ -175,8 +175,7 @@ ul > * {
 	border-left: 0px;
 	width: 170px;
 	height: 40px;
-	padding: 5px;
-	padding-top: 1.5vh;
+	padding-top: 10px;
 }
 #a:nth-child(1) {
 	border-left: 2px solid white;

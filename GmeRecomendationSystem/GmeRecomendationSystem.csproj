@@ -10,6 +10,10 @@
   <ItemGroup>
     <Compile Remove="Controllers\FileName.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\js\knockout-3.5.1.js" />
+  </ItemGroup>
   
   <ItemGroup>
     <Folder Include="Views\Shared\" />
